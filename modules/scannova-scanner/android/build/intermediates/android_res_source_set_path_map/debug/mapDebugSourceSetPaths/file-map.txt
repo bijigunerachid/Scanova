@@ -1,0 +1,9 @@
+expo.modules.scannovascanner.scannova-scanner-pngs-0 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\generated\res\pngs\debug
+expo.modules.scannovascanner.scannova-scanner-updated_navigation_xml-1 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\generated\updated_navigation_xml\debug
+expo.modules.scannovascanner.scannova-scanner-mergeDebugResources-2 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+expo.modules.scannovascanner.scannova-scanner-mergeDebugResources-3 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+expo.modules.scannovascanner.scannova-scanner-debug-4 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\merged_res\debug\mergeDebugResources
+expo.modules.scannovascanner.scannova-scanner-debug-5 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\packaged_res\debug\packageDebugResources
+expo.modules.scannovascanner.scannova-scanner-debug-6 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\src\debug\res
+expo.modules.scannovascanner.scannova-scanner-main-7 C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\src\main\res
+gradleHome-0 C:\Users\hp\.gradle

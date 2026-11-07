@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml:2:13-83
+INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml:2:13-83
+	package
+		INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml
+	xmlns:android
+		ADDED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml:2:23-81
+uses-sdk
+INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml reason: use-sdk injection requested
+INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml
+INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\hp\Desktop\scanova\modules\scannova-scanner\android\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest5218197827742524219.xml

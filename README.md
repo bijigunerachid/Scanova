@@ -4,7 +4,7 @@
 
 Scannova is an offline document scanner for Android and iOS. It needs no account, and documents stay on the device.
 
-**Current state:** step 1.1 of the [roadmap](docs/roadmap.md). The foundation exists, but scanning and document storage do not yet. The app opens to a branded start screen, and development builds also include a component gallery.
+**Current state:** step 1.2 of the [roadmap](docs/roadmap.md). The foundation and a native scanner module exist, but document storage and the real scan flow do not yet. The app opens to a branded start screen, and development builds also include a component gallery and a scanner proof screen.
 
 ## Requirements
 
@@ -65,14 +65,18 @@ The end-to-end flow is `tests/e2e/foundation.yaml`. It needs [Maestro](https://d
 maestro test tests/e2e/foundation.yaml
 ```
 
+The native scanner screens belong to Apple and Google, so they are checked by hand with [the Android scanner checklist](tests/manual/scanner-android.md).
+
 ## Project layout
 
 - `app/`: screens, using Expo Router file-based routes
+- `modules/scannova-scanner/`: local native module over ML Kit and VisionKit
 - `src/components/`: shared UI
+- `src/features/scanner/`: the scanner interface and its screen state
 - `src/theme/`: design tokens and light and dark themes
 - `src/localization/`: English and French
 - `src/services/`: non-UI services, currently preferences
-- `tests/`: unit, component and end-to-end tests
+- `tests/`: unit, component, end-to-end and manual tests
 - `scripts/`: tooling, currently the brand asset generator
 
 To regenerate the icons and logo, run `powershell -File scripts/generate-brand-assets.ps1`.
