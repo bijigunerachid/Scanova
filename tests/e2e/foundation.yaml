@@ -1,0 +1,38 @@
+# Run with: maestro test tests/e2e/foundation.yaml
+# Needs a development build on a connected phone with Metro running.
+appId: com.rachidbijigune.scannova
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: open-gallery
+    timeout: 60000
+- tapOn:
+    id: open-gallery
+
+# Language applies immediately.
+- tapOn:
+    id: language-fr
+- assertVisible: 'Numérisez. Affinez. Préservez.'
+- tapOn:
+    id: language-en
+- assertVisible: 'Scan. Refine. Preserve.'
+
+# Choices survive a full restart, which proves the real SQLite store is used.
+- tapOn:
+    id: language-fr
+- tapOn:
+    id: appearance-dark
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: 'Numérisez. Affinez. Préservez.'
+    timeout: 60000
+
+# Put the phone back to its defaults.
+- tapOn:
+    id: open-gallery
+- tapOn:
+    id: appearance-system
+- tapOn:
+    id: language-system

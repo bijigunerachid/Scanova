@@ -1,0 +1,26 @@
+{
+  "app": {
+    "name": "Scannova",
+    "tagline": "Numérisez. Affinez. Préservez."
+  },
+  "common": {
+    "cancel": "Annuler",
+    "clear": "Effacer",
+    "close": "Fermer",
+    "loading": "Chargement",
+    "moreActions": "Plus d’actions pour {{name}}",
+    "retry": "Réessayer"
+  },
+  "documents": {
+    "pageCount_one": "{{count}} page",
+    "pageCount_other": "{{count}} pages"
+  },
+  "folders": {
+    "documentCount_one": "{{count}} document",
+    "documentCount_other": "{{count}} documents"
+  },
+  "errors": {
+    "unexpectedTitle": "Une erreur est survenue",
+    "unexpectedMessage": "Scannova a rencontré un problème inattendu. Vos documents n’ont pas été modifiés."
+  }
+}

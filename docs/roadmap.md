@@ -1,51 +1,51 @@
 # Scannova roadmap
 
-**Status:** approved by the owner on 2026-11-06. Nothing is built yet.
+**Status:** approved by the owner on 2026-11-06. Step 1.1 is in progress.
 
 Related documents: [architecture](architecture.md) and [design system](design-system.md).
 
 ## Status of each phase
 
-| Phase | Name | Status |
-| --- | --- | --- |
-| 0 | Discovery | Done |
-| 1 | Foundation and scanner proof | Not started |
-| 2 | Local storage | Not started |
-| 3 | Core screens | Not started |
-| 4 | Scan flow | Not started |
-| 5 | Editor | Not started |
-| 6 | PDF and export | Not started |
-| 7 | Production readiness | Not started |
+| Phase | Name                         | Status      |
+| ----- | ---------------------------- | ----------- |
+| 0     | Discovery                    | Done        |
+| 1     | Foundation and scanner proof | In progress |
+| 2     | Local storage                | Not started |
+| 3     | Core screens                 | Not started |
+| 4     | Scan flow                    | Not started |
+| 5     | Editor                       | Not started |
+| 6     | PDF and export               | Not started |
+| 7     | Production readiness         | Not started |
 
 ## Technical risks
 
 Ordered by how much damage each risk can do. "Checked" means it was read in package source or official docs during discovery. "To prove" means it can only be confirmed on a real build or device.
 
-| # | Risk | Evidence | Response |
-| --- | --- | --- | --- |
-| 1 | No existing scanner wrapper fits a privacy-first app on React Native 0.88 | Checked: see [the comparison](architecture.md#scanner-engine-decision) | Write a small local Expo module over the two official APIs. Prove it in step 1.2, before other work depends on it |
-| 2 | Android scanning is not fully offline on first use. Google Play services downloads the ML Kit scanner's models, logic and UI | Checked: Google's docs | Show an honest "not ready" state and fall back to manual capture. Measure in airplane mode on a fresh install. To prove: whether the download can be requested ahead of time |
-| 3 | ML Kit does not work everywhere. It needs Google Play services and 1.7 GB of RAM, so it fails on devices such as recent Huawei phones | Checked: Google's docs | Same manual capture fallback |
-| 4 | Native scanners own their whole screen and return only the flattened page. The raw photo and detected corners are not returned | Checked: package source | See [how the spec maps to native scanners](#how-the-spec-maps-to-native-scanners) |
-| 5 | iOS cannot be built or debugged on Windows. VisionKit scanning does not run in the simulator | Well-known platform limit | Build with EAS in the cloud and test on a physical iPhone. This needs an Apple Developer account |
-| 6 | Skia may use too much memory on 12 MP images on mid-range Android phones | To prove | Measure at the start of Phase 5, and cap the working resolution if needed |
-| 7 | `pdf-lib` holds the whole document in JavaScript memory and has had no release since 2021 | Checked: npm | Stress test 100 pages on a mid-range phone in Phase 6. If it fails, write a small streaming JPEG-to-PDF writer |
-| 8 | App container paths change on iOS updates, which would break absolute file paths stored in the database | Well-known platform behaviour | Store only relative paths in SQLite |
-| 9 | Device backups may copy documents off the phone, which affects the privacy claims | Android setting is known. iOS exclusion to prove | Set `allowBackup: false` on Android. Check the iOS options in Phase 2 and describe the real behaviour in the privacy screen |
+| #   | Risk                                                                                                                                  | Evidence                                                               | Response                                                                                                                                                                     |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | No existing scanner wrapper fits a privacy-first app on React Native 0.88                                                             | Checked: see [the comparison](architecture.md#scanner-engine-decision) | Write a small local Expo module over the two official APIs. Prove it in step 1.2, before other work depends on it                                                            |
+| 2   | Android scanning is not fully offline on first use. Google Play services downloads the ML Kit scanner's models, logic and UI          | Checked: Google's docs                                                 | Show an honest "not ready" state and fall back to manual capture. Measure in airplane mode on a fresh install. To prove: whether the download can be requested ahead of time |
+| 3   | ML Kit does not work everywhere. It needs Google Play services and 1.7 GB of RAM, so it fails on devices such as recent Huawei phones | Checked: Google's docs                                                 | Same manual capture fallback                                                                                                                                                 |
+| 4   | Native scanners own their whole screen and return only the flattened page. The raw photo and detected corners are not returned        | Checked: package source                                                | See [how the spec maps to native scanners](#how-the-spec-maps-to-native-scanners)                                                                                            |
+| 5   | iOS cannot be built or debugged on Windows. VisionKit scanning does not run in the simulator                                          | Well-known platform limit                                              | Build with EAS in the cloud and test on a physical iPhone. This needs an Apple Developer account                                                                             |
+| 6   | Skia may use too much memory on 12 MP images on mid-range Android phones                                                              | To prove                                                               | Measure at the start of Phase 5, and cap the working resolution if needed                                                                                                    |
+| 7   | `pdf-lib` holds the whole document in JavaScript memory and has had no release since 2021                                             | Checked: npm                                                           | Stress test 100 pages on a mid-range phone in Phase 6. If it fails, write a small streaming JPEG-to-PDF writer                                                               |
+| 8   | App container paths change on iOS updates, which would break absolute file paths stored in the database                               | Well-known platform behaviour                                          | Store only relative paths in SQLite                                                                                                                                          |
+| 9   | Device backups may copy documents off the phone, which affects the privacy claims                                                     | Android setting is known. iOS exclusion to prove                       | Set `allowBackup: false` on Android. Check the iOS options in Phase 2 and describe the real behaviour in the privacy screen                                                  |
 
 ## How the spec maps to native scanners
 
 Some requirements change meaning once a native scanner is used. These are the honest outcomes.
 
-| Spec item | What Scannova will do |
-| --- | --- |
-| Live preview, edge detection, four-corner correction, retake, multi-page, flash | Provided by VisionKit and ML Kit inside their own screens, which we cannot restyle |
-| Front camera switching | Not offered on the scanner. The spec says "if appropriate", and the native scanners are built around the back camera |
-| "Keep the original image" | For a native scan, the original is the page the scanner returned, already flattened. For a gallery import or manual capture, it is the full photo |
-| Adjust boundaries after saving | Available in the editor for every page. On a native scan this is a second correction on the flattened page |
-| Filters | Applied by Scannova, not ML Kit. The scanner runs in base mode so that its filters are never baked into the original |
-| Automatic detection when unavailable | Manual capture with `expo-camera`, then the corners are placed by hand. There is no decorative overlay that pretends to detect anything |
-| Gallery import | Goes through the corner editor on both platforms, so behaviour is the same on each |
+| Spec item                                                                       | What Scannova will do                                                                                                                             |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Live preview, edge detection, four-corner correction, retake, multi-page, flash | Provided by VisionKit and ML Kit inside their own screens, which we cannot restyle                                                                |
+| Front camera switching                                                          | Not offered on the scanner. The spec says "if appropriate", and the native scanners are built around the back camera                              |
+| "Keep the original image"                                                       | For a native scan, the original is the page the scanner returned, already flattened. For a gallery import or manual capture, it is the full photo |
+| Adjust boundaries after saving                                                  | Available in the editor for every page. On a native scan this is a second correction on the flattened page                                        |
+| Filters                                                                         | Applied by Scannova, not ML Kit. The scanner runs in base mode so that its filters are never baked into the original                              |
+| Automatic detection when unavailable                                            | Manual capture with `expo-camera`, then the corners are placed by hand. There is no decorative overlay that pretends to detect anything           |
+| Gallery import                                                                  | Goes through the corner editor on both platforms, so behaviour is the same on each                                                                |
 
 ## Changes to the spec's plan
 
@@ -53,7 +53,7 @@ Some requirements change meaning once a native scanner is used. These are the ho
 2. **The scanner is proven first.** A real device build happens in step 1.2, not in Phase 3, because it is the largest risk.
 3. **`pdf-lib` replaces `expo-print` for PDFs.** Expo documents that Android page margins from HTML depend on the WebView engine. `pdf-lib` embeds JPEG bytes unchanged at exact page sizes, and it can be tested in Node.
 4. **`expo-secure-store` is dropped.** There are no secrets to store.
-5. **`expo-sqlite/kv-store` replaces AsyncStorage.** It removes one dependency and gives synchronous reads for theme and language at startup. It will be confirmed in step 1.1.
+5. **`expo-sqlite/kv-store` replaces AsyncStorage.** It removes one dependency and gives synchronous reads for theme and language at startup. Confirmed on a real phone in step 1.1, where saved choices survive a full app restart.
 6. **Auth, billing and background work do not apply.** There are no accounts and no payments. Recovery from interrupted scans covers the background work need.
 
 ## Phases and steps
@@ -68,6 +68,11 @@ Each step is one branch. The next step starts only after the previous branch is 
 ### Phase 1: Foundation and scanner proof
 
 - **1.1 `feature/foundation`:** Expo SDK 58 JavaScript project with exact versions, Expo Router, ESLint, Prettier, Jest, design tokens, light and dark themes, French and English, reusable UI components.
+  - **Static checks and tests (2026-11-07):** ESLint with no problems, Prettier clean, 80 of 80 Jest tests passing, 6 deliberate code breaks each caught by tests, `expo-doctor` 20 of 20, JavaScript bundles for Android and iOS.
+  - **Android build and devices (2026-11-07):** debug build for arm64 and x86_64. Run on the owner's Samsung Galaxy A30 (Android 11, about 411 wide) and a 1366 wide landscape tablet emulator (Android 16), with no JavaScript errors or app crashes logged.
+  - **Driven by `adb` on the phone:** appearance and language switching, both surviving a full app restart, the `system` appearance following the phone, bottom sheet and dialog closing with Back, toast appearing and clearing, and the navigation bar icons in light and dark.
+  - **Checked on the tablet:** start screen and gallery layout, dark theme and French. Buttons stretch across the whole width there. This is left for the tablet pass in step 7.1.
+  - **Not verified:** the Maestro flow, because Maestro was not installed, so `tests/e2e/foundation.yaml` has never run. A 390 wide device, because the phone used is about 411 wide. Release builds and iOS.
 - **1.2 `feature/scanner-proof`:** the local scanner module and a development build on the owner's Android phone.
 - **Gate:** multi-page scanning returns real files on the Android phone. If this fails, the plan is reviewed before Phase 2, and the first alternative is `expo-document-scanner`.
 
@@ -103,7 +108,7 @@ Each step is one branch. The next step starts only after the previous branch is 
 ### Phase 7: Production readiness
 
 - **7.1 `feature/quality`:** the device matrix, offline test, performance with 500 seeded documents, accessibility pass, tablet layout.
-- **7.2 `feature/release`:** release builds, app icon, store listings, privacy policy, name availability check.
+- **7.2 `feature/release`:** release builds, a check of the release manifest that removes unneeded permissions such as `INTERNET`, app icon, store listings, privacy policy, name availability check.
 - **7.3 `docs/handoff`:** `CONTRIBUTING.md`, a "What's next" section with launch and development tracks, and a local `CLAUDE.md` that is never committed.
 
 ## How each step is checked
@@ -111,9 +116,9 @@ Each step is one branch. The next step starts only after the previous branch is 
 - **Static checks:** ESLint, Prettier, `expo-doctor`, `npm audit`.
 - **Unit tests:** Jest with `jest-expo`, for logic such as corner geometry and PDF layout.
 - **Integration tests:** the repository SQL runs against a real SQLite engine in Node through `node:sqlite`, and real files are written to a temporary folder.
-- **End-to-end tests:** Maestro on an Android emulator, confirmed working on Windows in step 1.1.
+- **End-to-end tests:** Maestro on an Android device or emulator. It has not been run on Windows yet, so this is still to be confirmed.
 - **PDF tests:** generated files are reopened with a separate PDF parser.
-- **Screenshots:** a 390 wide phone and a 1366 wide landscape tablet. This app has no desktop version, so the tablet stands in for the 1366 check.
+- **Screenshots:** a phone about 390 wide and a 1366 wide landscape tablet. This app has no desktop version, so the tablet stands in for the 1366 check. The owner's phone is about 411 wide, and results state the width actually used.
 
 **Testing limits, stated plainly:**
 
