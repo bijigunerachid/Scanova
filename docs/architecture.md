@@ -1,6 +1,6 @@
 # Scannova architecture
 
-**Status:** proposed on 2026-11-06. The package versions below were read from npm and Expo's SDK 58 version list on that date, and none has been installed yet.
+**Status:** proposed on 2026-11-06, with versions read from npm and Expo's SDK 58 version list on that date. Packages not yet needed by a finished step are still only planned, and `package.json` shows what is installed. The scanner module was proven on a real Android phone in step 1.2.
 
 ## Platform baseline
 
@@ -36,6 +36,27 @@ Every package below was checked by reading its published source.
 - It can report availability to the app, which is what triggers the manual fallback.
 
 **The cost:** we own a little native code, and on Windows the iOS side can only be compiled through EAS. Both underlying APIs are small and officially supported, and the module sits behind one JavaScript interface. Switching to `expo-document-scanner` later would touch only `src/features/scanner`.
+
+### Scanner interface
+
+`src/features/scanner/scanner.js` is the only code that calls the native module. It checks everything the module returns.
+
+| Function                 | Result                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `getScannerAvailability` | `ready`, `download-required` or `unavailable`, with a reason. A failed check counts as unavailable            |
+| `prepareScanner`         | Asks Google Play services to download the scanner. It only starts the download, so check availability after   |
+| `scanDocument`           | `{ status: 'cancelled' }` or `{ status: 'completed', pages }`, where a page is `{ uri, width, height, size }` |
+
+A failure throws `ScannerError` with the code `unavailable`, `not-ready`, `in-progress`, `invalid-result` or `failed`. `useScanner` adds screen state and allows only one action at a time.
+
+**Learned on a real phone (step 1.2):**
+
+- ML Kit's `GmsDocumentScanner` extends `OptionalModuleApi`, so `ModuleInstall` can check for the scanner and request it ahead of time.
+- ML Kit leaves a copy of every page in the app's cache, and the module removes it. See [security](security.md#temporary-scan-files).
+- Sizes vary per page, because the scanner crops each one, so width and height are stored per page.
+- `download-required` does not mean scanning is blocked. On a fresh emulator, `areModulesAvailable` stayed false, yet the scanner opened and captured. The app must therefore not disable scanning on this status.
+
+**Not tested:** if the app process is killed while the scanner is open, the result is expected to be lost. Step 4.1 must cover this as part of interrupted scan recovery.
 
 ## Other dependencies
 

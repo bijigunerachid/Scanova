@@ -31,7 +31,13 @@ export default function StartScreen() {
         </AppText>
       </View>
       {__DEV__ ? (
-        <View style={{ padding: spacing.md }}>
+        <View style={{ padding: spacing.md, gap: spacing.sm }}>
+          <Button
+            label="Scanner proof (dev only)"
+            variant="secondary"
+            onPress={() => router.push('/dev/scanner')}
+            testID="open-scanner-proof"
+          />
           <Button
             label="Component gallery (dev only)"
             variant="secondary"

@@ -13,7 +13,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true,
-        "CFBundleLocalizations": ["en", "fr"]
+        "CFBundleLocalizations": ["en", "fr"],
+        "NSCameraUsageDescription": "Scannova uses the camera to scan your documents. Scans stay on your device."
       }
     },
     "android": {
