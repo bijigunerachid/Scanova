@@ -4,13 +4,13 @@
 
 ## Platform baseline
 
-| Item | Choice | Note |
-| --- | --- | --- |
-| Expo SDK | 58 (`expo` 58.0.23) | Current stable release |
-| React Native | 0.88.1, React 19.3.0 | Requires Node `^22.13`, `^24.3` or `>=26`. This machine has 24.22.1 |
-| Android | minSdk 24, targetSdk 36, compileSdk 37 | From React Native 0.88's version file |
-| Language | JavaScript for the app | The scanner module needs a little Kotlin and Swift, because the OS APIs are only reachable from native code |
-| Build | Expo development builds | Expo Go cannot load custom native code |
+| Item         | Choice                                 | Note                                                                                                        |
+| ------------ | -------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Expo SDK     | 58 (`expo` 58.0.23)                    | Current stable release                                                                                      |
+| React Native | 0.88.1, React 19.3.0                   | Requires Node `^22.13`, `^24.3` or `>=26`. This machine has 24.22.1                                         |
+| Android      | minSdk 24, targetSdk 36, compileSdk 37 | From React Native 0.88's version file                                                                       |
+| Language     | JavaScript for the app                 | The scanner module needs a little Kotlin and Swift, because the OS APIs are only reachable from native code |
+| Build        | Expo development builds                | Expo Go cannot load custom native code                                                                      |
 
 ## Scanner engine decision
 
@@ -18,14 +18,14 @@
 
 Every package below was checked by reading its published source.
 
-| Option | Findings | Verdict |
-| --- | --- | --- |
-| `react-native-document-scanner-plugin` 2.0.4 | Most used (about 494k downloads a month). Android mode is hardcoded to `SCANNER_MODE_FULL`, so filters can be baked into the original. No gallery option. Last push January 2026. Open issues report an iOS crash on a zero-page scan and an Android Gradle plugin problem, and React Native 0.88 uses Android Gradle plugin 9 | Rejected |
-| `@dariyd/react-native-document-scanner` 2.2.0 | Actively maintained, and the mode is configurable. But its Android manifest declares fine and coarse location permissions and it bundles `play-services-location`. No Expo config plugin | Rejected: conflicts with the privacy requirements |
-| `expo-document-scanner` 1.0.0 | Clean permissions, and the mode is configurable. Needs Nitro Modules as an extra dependency. About 4k downloads a month | Backup choice |
-| `@infinitered/react-native-mlkit-document-scanner` 5.0.0 | Android only | Rejected |
-| Commercial SDKs such as Scanbot | Paid, and contrary to the free initial business model | Rejected |
-| OpenCV (`react-native-fast-opencv`) | Would mean building and maintaining our own detection and camera experience | Rejected for detection |
+| Option                                                   | Findings                                                                                                                                                                                                                                                                                                                       | Verdict                                           |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| `react-native-document-scanner-plugin` 2.0.4             | Most used (about 494k downloads a month). Android mode is hardcoded to `SCANNER_MODE_FULL`, so filters can be baked into the original. No gallery option. Last push January 2026. Open issues report an iOS crash on a zero-page scan and an Android Gradle plugin problem, and React Native 0.88 uses Android Gradle plugin 9 | Rejected                                          |
+| `@dariyd/react-native-document-scanner` 2.2.0            | Actively maintained, and the mode is configurable. But its Android manifest declares fine and coarse location permissions and it bundles `play-services-location`. No Expo config plugin                                                                                                                                       | Rejected: conflicts with the privacy requirements |
+| `expo-document-scanner` 1.0.0                            | Clean permissions, and the mode is configurable. Needs Nitro Modules as an extra dependency. About 4k downloads a month                                                                                                                                                                                                        | Backup choice                                     |
+| `@infinitered/react-native-mlkit-document-scanner` 5.0.0 | Android only                                                                                                                                                                                                                                                                                                                   | Rejected                                          |
+| Commercial SDKs such as Scanbot                          | Paid, and contrary to the free initial business model                                                                                                                                                                                                                                                                          | Rejected                                          |
+| OpenCV (`react-native-fast-opencv`)                      | Would mean building and maintaining our own detection and camera experience                                                                                                                                                                                                                                                    | Rejected for detection                            |
 
 **Why the local module wins:**
 
@@ -41,23 +41,24 @@ Every package below was checked by reading its published source.
 
 All versions are pinned exactly, and only these are planned.
 
-| Need | Package | Reason |
-| --- | --- | --- |
-| Navigation | `expo-router` 58.0.30 | Required by the spec |
-| Metadata | `expo-sqlite` 58.0.15 | Required by the spec |
-| Files | `expo-file-system` 58.0.13 | Required by the spec |
-| Image processing | `@shopify/react-native-skia` 2.14.0 | GPU shaders can do perspective warps and thresholding, and it is on Expo's version list. `expo-image-manipulator` can only crop, rotate and resize |
-| Gestures and animation | `react-native-gesture-handler` 3.3.x, `react-native-reanimated` 4.7.1, `react-native-worklets` 0.13.0 | Corner dragging and page reorder. Skia also requires the last two |
-| Lists | `@shopify/flash-list` 2.3.2 | Stays smooth with hundreds of documents |
-| Thumbnails | `expo-image` 58.0.18 | Downsampling and caching |
-| Manual capture | `expo-camera` 58.0.14, with audio recording disabled | Fallback only |
-| Gallery import | `expo-image-picker` 58.0.10 | Required by the spec |
-| PDF | `pdf-lib` 1.17.1 | Embeds JPEG bytes unchanged, at exact page sizes |
-| PDF preview | `react-native-pdf` 7.0.5 | To prove in step 6.2 |
-| Sharing | `expo-sharing` 58.0.22 | Required by the spec |
-| Language | `i18next` 26.7.2, `react-i18next` 17.1.13, `expo-localization` 58.0.5 | Handles plurals, including Arabic rules later |
-| Icons and font | `@expo/vector-icons` 15.x, `@expo-google-fonts/inter` 0.4.2 | Line icons and Inter |
-| End-to-end tests | Maestro, installed outside the app | No app dependency |
+| Need                   | Package                                                                                               | Reason                                                                                                                                             |
+| ---------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Navigation             | `expo-router` 58.0.30                                                                                 | Required by the spec                                                                                                                               |
+| Metadata               | `expo-sqlite` 58.0.15                                                                                 | Required by the spec                                                                                                                               |
+| Files                  | `expo-file-system` 58.0.13                                                                            | Required by the spec                                                                                                                               |
+| Image processing       | `@shopify/react-native-skia` 2.14.0                                                                   | GPU shaders can do perspective warps and thresholding, and it is on Expo's version list. `expo-image-manipulator` can only crop, rotate and resize |
+| Gestures and animation | `react-native-gesture-handler` 3.5.0, `react-native-reanimated` 4.7.1, `react-native-worklets` 0.13.1 | Corner dragging and page reorder. Skia also requires the last two. Currently installed through `expo-router` and fixed by the lockfile             |
+| System bars            | `expo-navigation-bar` 58.0.4, `expo-status-bar`                                                       | Keeps Android's system icons readable when the appearance chosen in the app differs from the phone's setting                                       |
+| Lists                  | `@shopify/flash-list` 2.3.2                                                                           | Stays smooth with hundreds of documents                                                                                                            |
+| Thumbnails             | `expo-image` 58.0.18                                                                                  | Downsampling and caching                                                                                                                           |
+| Manual capture         | `expo-camera` 58.0.14, with audio recording disabled                                                  | Fallback only                                                                                                                                      |
+| Gallery import         | `expo-image-picker` 58.0.10                                                                           | Required by the spec                                                                                                                               |
+| PDF                    | `pdf-lib` 1.17.1                                                                                      | Embeds JPEG bytes unchanged, at exact page sizes                                                                                                   |
+| PDF preview            | `react-native-pdf` 7.0.5                                                                              | To prove in step 6.2                                                                                                                               |
+| Sharing                | `expo-sharing` 58.0.22                                                                                | Required by the spec                                                                                                                               |
+| Language               | `i18next` 26.7.2, `react-i18next` 17.1.13, `expo-localization` 58.0.5                                 | Handles plurals, including Arabic rules later                                                                                                      |
+| Icons and font         | `@expo/vector-icons` 15.x, `@expo-google-fonts/inter` 0.4.2                                           | Line icons and Inter                                                                                                                               |
+| End-to-end tests       | Maestro, installed outside the app                                                                    | No app dependency                                                                                                                                  |
 
 ## Folder structure
 
@@ -171,12 +172,12 @@ Everything runs on the device with Skia, using offscreen surfaces:
 3. Apply rotation, then the filter.
 4. Encode to JPEG and write the file.
 
-| Filter | Method |
-| --- | --- |
-| Grayscale | Luminance colour matrix |
-| Black and white | Adaptive threshold shader, which copes with uneven lighting better than one fixed threshold |
-| Enhanced | Background normalisation plus contrast shader |
-| Brightness and contrast | Colour matrix |
+| Filter                  | Method                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------- |
+| Grayscale               | Luminance colour matrix                                                                     |
+| Black and white         | Adaptive threshold shader, which copes with uneven lighting better than one fixed threshold |
+| Enhanced                | Background normalisation plus contrast shader                                               |
+| Brightness and contrast | Colour matrix                                                                               |
 
 Previews use a downscaled copy, and full resolution is only processed on save. The memory limits are measured at the start of Phase 5.
 

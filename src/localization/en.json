@@ -1,0 +1,26 @@
+{
+  "app": {
+    "name": "Scannova",
+    "tagline": "Scan. Refine. Preserve."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "close": "Close",
+    "loading": "Loading",
+    "moreActions": "More actions for {{name}}",
+    "retry": "Try again"
+  },
+  "documents": {
+    "pageCount_one": "{{count}} page",
+    "pageCount_other": "{{count}} pages"
+  },
+  "folders": {
+    "documentCount_one": "{{count}} document",
+    "documentCount_other": "{{count}} documents"
+  },
+  "errors": {
+    "unexpectedTitle": "Something went wrong",
+    "unexpectedMessage": "Scannova hit an unexpected problem. Your documents were not changed."
+  }
+}
